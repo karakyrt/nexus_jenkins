@@ -8,4 +8,5 @@ node {
     }
     stage("terraform Apply"){
         sh "terraform appy --auto-approve"
-}
+  }
+}  
