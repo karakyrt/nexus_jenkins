@@ -3,7 +3,7 @@ pipeline{
     stages{
         stage("Git Pull"){
             steps{
-                git 'git@github.com:karakyrt/nexus_jenkins.git'
+                git 'https://github.com/karakyrt/nexus_jenkins.git'
             }
         }
         stage("Initialization"){
