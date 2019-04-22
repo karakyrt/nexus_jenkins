@@ -8,19 +8,22 @@ pipeline{
         }
         stage("Initialization"){
             steps{
-                sh "terraform init"
+                ws("${workspace}/nexus_jenkins/"){
+                    sh "terraform init"
                 }
             }
         }
         stage("Plan"){
             steps{
-                sh "terraform plan"
+                ws("${workspace}/nexus_jenkins/"){
+                    sh "terraform plan"
                 }  
             }
         }
         stage("Apply"){
             steps{
-                sh "terraform apply -auto-approve"
+                ws("${workspace}/nexus_jenkins"){
+                    sh "terraform apply -auto-approve"
                 }
             }
         }           
