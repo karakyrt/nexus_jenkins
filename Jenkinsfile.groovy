@@ -1,12 +1,31 @@
-node {
-    properties([parameters([string(defaultValue: 'Apply', description: 'What parameters you want to use??', name: 'Terraform_Plan_Apply_Destroy', trim: true)])])
-    stage("Terraform init"){
-        sh "terraform init"
+pipeline{
+    agent any
+    stages{
+        stage("Git Pull"){
+            steps{
+                git 'git@github.com:karakyrt/nexus_jenkins.git'
+            }
+        }
+        stage("Initialization"){
+            steps{
+                ws("${workspace}/nexus_jenkins/"){
+                    sh "terraform init"
+                }
+            }
+        }
+        stage("Plan"){
+            steps{
+                ws("${workspace}/nexus_jenkins/"){
+                    sh "terraform plan"
+                }  
+            }
+        }
+        stage("Apply"){
+            steps{
+                ws("${workspace}/nexus_jenkins/"){
+                    sh "terraform apply -auto-approve"
+                }
+            }
+        }           
     }
-    stage("terraform Plan"){
-        sh "terraform plan --auto-approve"
-    }
-    stage("terraform Apply"){
-        sh "terraform appy --auto-approve"
-  }
-}  
+}
