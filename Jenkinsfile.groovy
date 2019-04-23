@@ -11,25 +11,25 @@ node('master') {
     )])
     checkout scm
     stage('Generate Vars') {
-        def file = new File("${WORKSPACE}/nexusDeployment/nexus.tfvars")
+        def file = new File("${WORKSPACE}/nexus_jenkins/nexus.tfvars")
         file.write """
         namespace             =  "${namespace}"
         """
       }
     stage("Terraform init") {
-      dir("${workspace}/nexusDeployment/") {
+      dir("${workspace}/nexus_jenkins/") {
         sh "terraform init"
       }
     }
     stage("Terraform Apply/Plan"){
       if (!params.terraformDestroy) {
         if (params.terraformApply) {
-          dir("${workspace}/nexusDeployment/") {
+          dir("${workspace}/nexus_jenkins/") {
             echo "##### Terraform Applying the Changes ####"
             sh "terraform apply --auto-approve -var-file=nexus.tfvars"
         }
       } else {
-          dir("${WORKSPACE}/nexusDeployment") {
+          dir("${WORKSPACE}/nexus_jenkins") {
             echo "##### Terraform Plan (Check) the Changes ####"
             sh "terraform plan -var-file=nexus.tfvars"
           }
@@ -39,7 +39,7 @@ node('master') {
     stage('Terraform Destroy') {
       if (!params.terraformApply) {
         if (params.terraformDestroy) {
-          dir("${WORKSPACE}/nexusDeployment") {
+          dir("${WORKSPACE}/nexus_jenkins") {
             echo "##### Terraform Destroying ####"
             sh "terraform destroy --auto-approve -var-file=nexus.tfvars"
           }
