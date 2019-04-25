@@ -11,7 +11,7 @@ node('master') {
     )])
     checkout scm
     stage('Generate Vars') {
-        def file = new File("${WORKSPACE}/nexus_jenkins/nexus.tfvars")
+        def file = new File("${WORKSPACE}/nexus.tfvars")
         file.write """
         namespace             =  "${namespace}"
         """
